@@ -33,10 +33,12 @@ function setAttributes(element, attributes) {
 
 // create elements for links and photos, add to DOM
 function displayPhotos() {
-    imageLoaded = 0;
+    imagesLoaded = 0;
+    console.log('more total images:' , totalImages);
     totalImages = photosArray.length;
-    console.log('totalIMages: ', totalImages);
+    console.log('totalImages: ', totalImages);
     photosArray.forEach((photo) => {
+        console.log(1);
         // create an <a> to link to unsplash 
         const item = document.createElement('a');
         // item.setAttribute('href', photo.links.html);
@@ -45,6 +47,7 @@ function displayPhotos() {
             href: photo.links.html,
             target: '_blank',
         });
+        console.log('item', item);
         // create image for photo
         const img = document.createElement('img');
         // img.setAttribute('src', photo.urls.regular);
@@ -55,6 +58,7 @@ function displayPhotos() {
             alt: photo.alt_description,
             title: photo.alt_description
         });
+        console.log('img', img);
         // check when each has finished loading
         img.addEventListener('load', imageLoaded);
         // put image inside the anchor element, then put both inside of image container element
