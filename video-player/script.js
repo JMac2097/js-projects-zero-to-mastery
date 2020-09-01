@@ -50,9 +50,37 @@ function updateProgress() {
     duration.textContent = `${displayTime(video.duration)}`;
 }
 
+// click to seek within video
+function setProgress(e) {
+    const newTime = e.offsetX / progressRange.offsetWidth;
+    progressBar.style.width = `${newTime * 100}%`;
+    video.currentTime = newTime * video.duration;
+}
 
 // Volume Controls --------------------------- //
 
+// volume bar
+function changeVolume(e) {
+    let volume = e.offsetX / volumeRange.offsetWidth;
+    // rounding volume up or down
+    if (volume < 0.1) {
+        volume = 0;
+    }
+    if (volume > 0.9) {
+        volume = 1;
+    }
+    volumeBar.style.width = `${volume * 100}%`;
+    video.volume = volume;
+    // change icon depending on volume
+    volumeIcon.className = '';
+    if (volume > 0.7) {
+        volumeIcon.classList.add('fas', 'fa-volume-up');
+    } else if (volume < 0.7 && volume > 0) {
+        volumeIcon.classList.add('fas', 'fa-volume-down');
+    } else if (volume === 0) {
+        volumeIcon.classList.add('fas', 'fa-volume-off');
+    }
+}
 
 
 // Change Playback Speed -------------------- //
@@ -67,3 +95,5 @@ playButton.addEventListener('click', togglePlay);
 video.addEventListener('click', togglePlay);
 video.addEventListener('timeupdate', updateProgress);
 video.addEventListener('canplay', updateProgress);
+progressRange.addEventListener('click', setProgress);
+volumeRange.addEventListener('click', changeVolume);
