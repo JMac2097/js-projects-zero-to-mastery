@@ -1,7 +1,7 @@
 const resultsNav = document.querySelector('#resultsNav');
 const favouritesNav = document.querySelector('#favouritesNav');
 const imagesContainer = document.querySelector('.images-container');
-const savwConfirm = document.querySelector('.save-confirmed');
+const saveConfirm = document.querySelector('.save-confirmed');
 const loader = document.querySelector('.loader');
 
 // nasa API
@@ -10,9 +10,9 @@ const count = 10;
 const apiUrl = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}&count=${count}`;
 
 let resultsArray = [];
+let favourites = {};
 
-// update DOM
-function updateDOM() {
+function createDOMNodes() {
     resultsArray.forEach(results => {
         // card container
         const card = document.createElement('div');
@@ -39,6 +39,9 @@ function updateDOM() {
         const saveText = document.createElement('p');
         saveText.classList.add('clickable');
         saveText.textContent = 'Add to favourites';
+
+        saveText.setAttribute('onclick', `saveFavourite('${results.url}')`);
+
         // card text
         const cardText = document.createElement('p');
         cardText.textContent = results.explanation;
@@ -62,6 +65,15 @@ function updateDOM() {
     });
 }
 
+// update DOM
+function updateDOM() {
+
+    //  get values from local storage
+
+
+    createDOMNodes();
+}
+
 // get ten images fron nasa API
 async function getNasaPictures() {
     try {
@@ -74,5 +86,24 @@ async function getNasaPictures() {
     }
 }
 
+// add result to favourites
+function saveFavourite(itemURL) {
+
+    console.log(itemURL);
+    // loop results
+    resultsArray.forEach(item => {
+        if (item.url.includes(itemURL) && !favourites[itemURL]) {
+            favourites[itemURL] = item;
+            console.log(JSON.stringify(favourites));
+            // show save confirmation
+            saveConfirm.hidden = false;
+            setTimeout(() => {
+                saveConfirm.hidden = true;
+            }, 2000);
+            // set favourites to localstorage
+            localStorage.setItem('nasaFavourites', JSON.stringify(favourites));
+        }
+    })
+}
 
 getNasaPictures();
