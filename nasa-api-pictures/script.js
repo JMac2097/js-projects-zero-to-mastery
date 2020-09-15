@@ -12,8 +12,23 @@ const apiUrl = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}&count=${co
 let resultsArray = [];
 let favourites = {};
 
-function createDOMNodes() {
-    resultsArray.forEach(results => {
+function showContent(page) {
+    window.scrollTo({top: 0, behavior: 'instant'});
+    if (page === 'results') {
+        resultsNav.classList.remove('hidden');
+        favouritesNav.classList.add('hidden');
+    } else {
+        resultsNav.classList.add('hidden');
+        favouritesNav.classList.remove('hidden');
+    }
+    loader.classList.add('hidden');
+
+}
+
+function createDOMNodes(page) {
+    const currentArry = page === 'results' ? resultsArray : Object.values(favourites);
+
+    currentArry.forEach(results => {
         // card container
         const card = document.createElement('div');
         card.classList.add('card');
@@ -38,9 +53,13 @@ function createDOMNodes() {
         // save text
         const saveText = document.createElement('p');
         saveText.classList.add('clickable');
-        saveText.textContent = 'Add to favourites';
-
-        saveText.setAttribute('onclick', `saveFavourite('${results.url}')`);
+        if (page === 'results') {
+            saveText.textContent = 'Add to favourites';
+            saveText.setAttribute('onclick', `saveFavourite('${results.url}')`);
+        } else {
+            saveText.textContent = 'Remove favourite';
+            saveText.setAttribute('onclick', `removeFavourite('${results.url}')`);
+        }
 
         // card text
         const cardText = document.createElement('p');
@@ -66,20 +85,26 @@ function createDOMNodes() {
 }
 
 // update DOM
-function updateDOM() {
+function updateDOM(page) {
 
     //  get values from local storage
+    if (localStorage.getItem('nasaFavourites')) {
+        favourites = JSON.parse(localStorage.getItem('nasaFavourites'));
+    }
+    imagesContainer.textContent = '';
 
-
-    createDOMNodes();
+    createDOMNodes(page);
+    showContent(page);
 }
 
 // get ten images fron nasa API
 async function getNasaPictures() {
+    // show loader
+    loader.classList.remove('hidden');
     try {
         const response = await fetch(apiUrl);
         resultsArray = await response.json();
-        updateDOM();
+        updateDOM('results');
     } catch (error) {
         // catch error here
         console.log(error);
@@ -103,7 +128,16 @@ function saveFavourite(itemURL) {
         }
     });
 
+}
 
+// remove from favourites
+function removeFavourite(itemURL) {
+    if (favourites[itemURL]) {
+        delete favourites[itemURL];
+        // set favourites in local storage
+        localStorage.setItem('nasaFavourites', JSON.stringify(favourites));
+        updateDOM('favourites');
+    }
 }
 
 getNasaPictures();
