@@ -1,7 +1,7 @@
 const resultsNav = document.querySelector('#resultsNav');
 const favouritesNav = document.querySelector('#favouritesNav');
 const imagesContainer = document.querySelector('.images-container');
-const saveConfirm = document.querySelector('.save-confirmed');
+const saveConfirmed = document.querySelector('.save-confirmed');
 const loader = document.querySelector('.loader');
 
 // nasa API
@@ -89,21 +89,21 @@ async function getNasaPictures() {
 // add result to favourites
 function saveFavourite(itemURL) {
 
-    console.log(itemURL);
-    // loop results
-    resultsArray.forEach(item => {
+    // loop through results array for fave
+    resultsArray.forEach((item) => {
         if (item.url.includes(itemURL) && !favourites[itemURL]) {
             favourites[itemURL] = item;
-            console.log(JSON.stringify(favourites));
-            // show save confirmation
-            saveConfirm.hidden = false;
+            //  show save confirmation
+            saveConfirmed.hidden = false;
             setTimeout(() => {
-                saveConfirm.hidden = true;
+                saveConfirmed.hidden = true;
             }, 2000);
-            // set favourites to localstorage
+            // set favourites in local storage
             localStorage.setItem('nasaFavourites', JSON.stringify(favourites));
         }
-    })
+    });
+
+
 }
 
 getNasaPictures();
