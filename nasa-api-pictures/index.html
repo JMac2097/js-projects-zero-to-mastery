@@ -45,3 +45,34 @@
     <script src="script.js"></script>
 </body>
 </html>
+
+
+
+
+@helper WishlistHeartFilled(string extraClass = "")
+{
+    if (Utils.IsSvgSupported())
+    {
+        <svg class="@extraClass" xmlns="http://www.w3.org/2000/svg" width="18" height="16" viewBox="0 0 5.015 4.457">
+            <path d="M1.04.047C.656.164.301.487.12.887c-.162.35-.157.988.005 1.403.177.456.587.987 1.053 1.362.425.339 1.195.805 1.331.805.137 0 .907-.466 1.332-.805.466-.375.876-.906 1.053-1.362.162-.42.162-1.058.005-1.402C4.67.397 4.24.068 3.748.017c-.41-.04-.703.02-.992.213l-.258.177L2.336.28C2.012.037 1.43-.07 1.04.047z" />
+        </svg>
+    }
+    else
+    {
+        <img src="~/Content/img/icons/svg-fallbacks/favourite.png" class="@extraClass svg-fallback" alt="Favourite" />
+    }
+}
+
+@helper WishlistHeartEmpty(string extraClass = "")
+{
+    if (Utils.IsSvgSupported())
+    {
+        <svg class="@extraClass" xmlns="http://www.w3.org/2000/svg" width="18" height="16" viewBox="0 0 5.015 4.457">
+            <path d="M1.055.038C.668.155.312.481.129.883c-.163.351-.158.992.005 1.41.178.458.59.992 1.058 1.368.428.341 1.201.81 1.338.81.138 0 .911-.469 1.339-.81.468-.376.88-.91 1.058-1.368.163-.423.163-1.064.005-1.41C4.703.39 4.271.06 3.777.008c-.412-.04-.707.02-.997.214L2.52.4 2.347.267a1.715 1.715 0 00-.361-.203c-.209-.071-.728-.087-.931-.026zm.778.57c.061.03.245.189.407.341l.29.29.255-.27c.346-.356.509-.432.87-.407.361.026.595.189.758.53.366.753-.33 1.903-1.587 2.61-.285.163-.29.163-.458.076a5.329 5.329 0 01-1.196-.905c-.402-.438-.6-.87-.6-1.334 0-.305.02-.386.137-.57.081-.116.229-.254.33-.31.214-.112.621-.137.794-.05z" />
+        </svg>
+    }
+    else
+    {
+        <img src="~/Content/img/icons/svg-fallbacks/favourite.png" class="@extraClass svg-fallback" alt="Favourite" />
+    }
+}
